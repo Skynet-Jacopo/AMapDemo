@@ -44,11 +44,11 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
     private ImageView mIvWalk;
 
     private Context          mContext;
-    private DriveRouteResult mDriveRouteResult;
-    private BusRouteResult   mBusRouteResult;
-    private WalkRouteResult  mWalkRouteResult;
+    private DriveRouteResult mDriveRouteResult;//自驾回调结果
+    private BusRouteResult   mBusRouteResult;//公交回调结果
+    private WalkRouteResult  mWalkRouteResult;//步行回调结果
     private RouteSearch      mRouteSearch;
-    private String mCurrentCityName;
+    private String mCurrentCityName;//当前城市名称
     private LatLonPoint mStartPoint;//起点，
     private LatLonPoint mEndPoint;//终点，
     private ListView    mBusResultList;
@@ -84,7 +84,7 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
         mTvPathDes = (TextView) findViewById(R.id.tv_path_des);
 
         Intent intent = this.getIntent();
-        Bundle bundle = getIntent().getExtras();
+        Bundle bundle = intent.getExtras();
         Log.d(TAG, "initView: " + bundle.get("Latitude"));
         int which = (int) bundle.get("which");
         Log.d(TAG, "initView: " + which);
@@ -105,14 +105,20 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
         mBusResultList = (ListView) findViewById(R.id.list_route);
         switch (which) {
             case BUS:
+                mRlayoutCarAndWalk.setVisibility(View.GONE);
+                mBusResultList.setVisibility(View.VISIBLE);
                 mIvBus.setImageResource(R.drawable.bus02);
                 searchRouteResult(BUS, RouteSearch.BusDefault);
                 break;
             case CAR:
+                mRlayoutCarAndWalk.setVisibility(View.VISIBLE);
+                mBusResultList.setVisibility(View.GONE);
                 mIvCar.setImageResource(R.drawable.car02);
                 searchRouteResult(CAR, RouteSearch.DrivingDefault);
                 break;
             case WALK:
+                mRlayoutCarAndWalk.setVisibility(View.VISIBLE);
+                mBusResultList.setVisibility(View.GONE);
                 mIvWalk.setImageResource(R.drawable.man02);
                 searchRouteResult(WALK, RouteSearch.WalkDefault);
                 break;
@@ -186,14 +192,14 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
                     mBusRouteResult = result;
                     BusResultListAdapter mBusResultListAdapter = new BusResultListAdapter(mContext, mBusRouteResult);
                     mBusResultList.setAdapter(mBusResultListAdapter);
-                } else if (result != null && result.getPaths() == null) {
+                } else if (result.getPaths() == null) {
                     ToastUtil.show(mContext, R.string.no_result);
                 }
             } else {
                 ToastUtil.show(mContext, R.string.no_result);
             }
-        } else {
-            ToastUtil.showerror(this.getApplicationContext(), errorCode);
+//        } else {
+//            ToastUtil.showerror(this.getApplicationContext(), errorCode);
         }
     }
 
@@ -205,15 +211,13 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
                 if (result.getPaths().size() > 0) {
                     mDriveRouteResult = result;
                     final DrivePath drivePath = mDriveRouteResult.getPaths().get(0);
-                    mBusResultList.setVisibility(View.GONE);
-                    mRlayoutCarAndWalk.setVisibility(View.VISIBLE);
                     int dis = (int) drivePath.getDistance();
                     int dur = (int) drivePath.getDuration();
                     String des = AMapUtil.getFriendlyTime(dur) + " . " + AMapUtil.getFriendlyLength
                             (dis);
                     mTvPathDes.setText(des);
 //                    mRouteDetailDes.setVisibility(View.VISIBLE);
-                    int taxiCost = (int) mDriveRouteResult.getTaxiCost();
+//                    int taxiCost = (int) mDriveRouteResult.getTaxiCost();
 //                    mTvPathTitle.setText("打车约"+taxiCost+"元");
                     List<DriveStep> steps = drivePath.getSteps();
                     String          road  = "";
@@ -232,15 +236,15 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
                             startActivity(intent);
                         }
                     });
-                } else if (result != null && result.getPaths() == null) {
+                } else if (result.getPaths() == null) {
                     ToastUtil.show(mContext, R.string.no_result);
                 }
 
             } else {
                 ToastUtil.show(mContext, R.string.no_result);
             }
-        } else {
-            ToastUtil.showerror(this.getApplicationContext(), errorCode);
+//        } else {
+//            ToastUtil.showerror(this.getApplicationContext(), errorCode);
         }
 
     }
@@ -254,7 +258,6 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
                     mWalkRouteResult = result;
                     final WalkPath walkPath = mWalkRouteResult.getPaths()
                             .get(0);
-                    mRlayoutCarAndWalk.setVisibility(View.VISIBLE);
                     int dis = (int) walkPath.getDistance();
                     int dur = (int) walkPath.getDuration();
                     String des = AMapUtil.getFriendlyTime(dur)+" . "+AMapUtil.getFriendlyLength(dis);
@@ -277,15 +280,15 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
                             startActivity(intent);
                         }
                     });
-                } else if (result != null && result.getPaths() == null) {
+                } else if (result.getPaths() == null) {
                     ToastUtil.show(mContext, R.string.no_result);
                 }
 
             } else {
                 ToastUtil.show(mContext, R.string.no_result);
             }
-        } else {
-            ToastUtil.showerror(this.getApplicationContext(), errorCode);
+//        } else {
+//            ToastUtil.showerror(this.getApplicationContext(), errorCode);
         }
     }
 

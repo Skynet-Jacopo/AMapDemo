@@ -33,13 +33,13 @@ public class DriveRouteDetailActivity extends AppCompatActivity implements Locat
     private DriveRouteResult   mDriveRouteResult;
     private AMapLocationClient mlocationClient;
     private LatLng             mCurrentlatLng;
-    ImageView    up;
-    LinearLayout menu, view;
-    private LinearLayout.LayoutParams lp, lp2;
-    private boolean isUp;
-    private TextView mTvPathTitle;
-    private TextView mTvPathDes;
-    private ListView mLvPathDetial;
+    private ImageView          mIvUp;
+    private LinearLayout       menu;
+    private LinearLayout       view;
+    private boolean            isUp;
+    private TextView           mTvPathTitle;
+    private TextView           mTvPathDes;
+    private ListView           mLvPathDetial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +81,11 @@ public class DriveRouteDetailActivity extends AppCompatActivity implements Locat
         drivingRouteOverlay.addToMap();
         drivingRouteOverlay.zoomToSpan();
 
-        up = (ImageView) findViewById(R.id.iv_up);
+        mIvUp = (ImageView) findViewById(R.id.iv_up);
         view = (LinearLayout) findViewById(R.id.llayout_map);
         menu = (LinearLayout) findViewById(R.id.llayout_route_detail);
         isUp = false;
-        up.setOnClickListener(new View.OnClickListener() {
+        mIvUp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 UpButton();
             }
@@ -96,9 +96,9 @@ public class DriveRouteDetailActivity extends AppCompatActivity implements Locat
         mLvPathDetial = (ListView) findViewById(R.id.route_detail);
 
         List<DriveStep> steps = mDrivePath.getSteps();
-        String                  road  = "";
+        String          road  = "";
         for (int i = 0; i < steps.size(); i++) {
-            road += steps.get(i).getRoad()+" ";
+            road += steps.get(i).getRoad() + " ";
         }
         mTvPathTitle.setText("途径:" + road);
         int dis = (int) mDrivePath.getDistance();
@@ -107,7 +107,7 @@ public class DriveRouteDetailActivity extends AppCompatActivity implements Locat
                 (dis);
         mTvPathDes.setText(des);
 
-        ItemDriveDetialAdapter adapter =new ItemDriveDetialAdapter(getApplicationContext(),
+        ItemDriveDetialAdapter adapter = new ItemDriveDetialAdapter(getApplicationContext(),
                 mDrivePath);
         mLvPathDetial.setAdapter(adapter);
     }
@@ -128,7 +128,7 @@ public class DriveRouteDetailActivity extends AppCompatActivity implements Locat
             lp2.setMargins(0, -h, 0, h);
             menu.setLayoutParams(lp);
             view.setLayoutParams(lp2);
-            up.setImageResource(R.drawable.load_more_arrow_down);
+            mIvUp.setImageResource(R.drawable.load_more_arrow_down);
             isUp = true;
 
         } else if (isUp) {
@@ -137,7 +137,7 @@ public class DriveRouteDetailActivity extends AppCompatActivity implements Locat
             lp.setMargins(0, 0, 0, 0);
             menu.setLayoutParams(lp);
             view.setLayoutParams(lp);
-            up.setImageResource(R.drawable.history_directory_indicator_up);
+            mIvUp.setImageResource(R.drawable.history_directory_indicator_up);
             isUp = false;
         }
     }
@@ -177,5 +177,32 @@ public class DriveRouteDetailActivity extends AppCompatActivity implements Locat
                 aMapLocation.getLongitude());
         //中心移到标记地点
         aMap.moveCamera(CameraUpdateFactory.changeLatLng(mCurrentlatLng));
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
+        mapView.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //在activity执行onResume时执行mMapView.onResume ()，实现地图生命周期管理
+        mapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //在activity执行onPause时执行mMapView.onPause ()，实现地图生命周期管理
+        mapView.onPause();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，实现地图生命周期管理
+        mapView.onSaveInstanceState(outState);
     }
 }

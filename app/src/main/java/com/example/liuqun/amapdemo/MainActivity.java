@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -156,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
         otMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.nbsearch_location_map));
 
         aMap.addMarker(otMarkerOptions);
-
         aMap.setOnMarkerClickListener(this);// 添加点击marker监听事件
         //中心移到标记地点
         aMap.moveCamera(CameraUpdateFactory.changeLatLng(mTargetLatLng));
@@ -244,8 +242,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
     @Override
     public void onLocationChanged(AMapLocation amapLocation) {
         if (mListener != null && amapLocation != null) {
-            if (amapLocation != null
-                    && amapLocation.getErrorCode() == 0) {
+            if (amapLocation.getErrorCode() == 0) {
 //                mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
                 mCurrentlatLng = new LatLng(amapLocation.getLatitude(),
                         amapLocation.getLongitude());
@@ -267,8 +264,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
                 searchRouteResult(CAR,RouteSearch.DrivingDefault);
                 searchRouteResult(WALK,RouteSearch.WalkDefault);
 
-            } else {
-                Toast.makeText(MainActivity.this, "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo(), Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(MainActivity.this, "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -313,9 +310,6 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
     /**
      * 开始搜索路径规划方案获取最短时间 显示
      */
-    /**
-     * 开始搜索路径规划方案
-     */
     public void searchRouteResult(int routeType, int mode) {
         final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(
                 mStartPoint, mEndPoint);
@@ -336,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
     //逆地理编码回调接口
     @Override
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-        mCurrentCityName = regeocodeResult.getRegeocodeAddress().getCityCode();
+        mCurrentCityName = regeocodeResult.getRegeocodeAddress().getCity();
     }
     //地理编码回调接口
     @Override
@@ -351,14 +345,12 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
                 if (result.getPaths().size() > 0) {
                     mTvBusTime.setText(AMapUtil.getFriendlyTime((int) result.getPaths().get(0)
                             .getDuration())+"");
-                } else if (result != null && result.getPaths() == null) {
+                } else if (result.getPaths() == null) {
                     ToastUtil.show(getApplicationContext(), R.string.no_result);
                 }
             } else {
                 ToastUtil.show(getApplicationContext(), R.string.no_result);
             }
-        } else {
-            ToastUtil.showerror(this.getApplicationContext(), errorCode);
         }
     }
 
@@ -369,14 +361,12 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
                 if (result.getPaths().size() > 0) {
                     mTvCarTime.setText(AMapUtil.getFriendlyTime((int) result.getPaths().get(0)
                             .getDuration()));
-                } else if (result != null && result.getPaths() == null) {
+                } else if (result.getPaths() == null) {
                     ToastUtil.show(getApplicationContext(), R.string.no_result);
                 }
             } else {
                 ToastUtil.show(getApplicationContext(), R.string.no_result);
             }
-        } else {
-            ToastUtil.showerror(this.getApplicationContext(), errorCode);
         }
     }
 
@@ -387,14 +377,12 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
                 if (result.getPaths().size() > 0) {
                     mTvWalkTime.setText(AMapUtil.getFriendlyTime((int) result.getPaths().get(0)
                             .getDuration()));
-                } else if (result != null && result.getPaths() == null) {
+                } else if (result.getPaths() == null) {
                     ToastUtil.show(getApplicationContext(), R.string.no_result);
                 }
             } else {
                 ToastUtil.show(getApplicationContext(), R.string.no_result);
             }
-        } else {
-            ToastUtil.showerror(this.getApplicationContext(), errorCode);
         }
     }
 }

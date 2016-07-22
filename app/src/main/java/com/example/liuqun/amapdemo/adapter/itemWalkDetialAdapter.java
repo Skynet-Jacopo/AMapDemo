@@ -14,9 +14,6 @@ import com.example.liuqun.amapdemo.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by liuqun on 7/21/2016.
- */
 public class itemWalkDetialAdapter extends BaseAdapter {
 
     private List<WalkStep> mSteps = new ArrayList<WalkStep>();
