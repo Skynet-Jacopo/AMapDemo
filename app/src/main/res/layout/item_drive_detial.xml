@@ -16,7 +16,6 @@
             android:layout_marginLeft="50dp"
             android:layout_marginStart="50dp"
             android:textColor="#333333"
-            android:text="出发"
             android:textSize="14sp"/>
     </RelativeLayout>
 </LinearLayout>

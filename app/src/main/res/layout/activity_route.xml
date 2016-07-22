@@ -6,7 +6,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
@@ -36,25 +37,26 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:background="#d0c0c0"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:src="@drawable/nbsearch_location_map"/>
 
             <ImageView
@@ -66,109 +68,119 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_weight="8"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="8"
             android:orientation="vertical">
 
             <TextView
-                android:layout_weight="1"
-                android:layout_gravity="center"
                 android:id="@+id/txt_start"
-                android:textSize="25sp"
-                android:text="@string/start_point"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#d0c0c0"/>
-            <TextView
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_gravity="center"
-                android:id="@+id/txt_end"
-                android:textSize="25sp"
-                android:text="@string/end_point"
+                android:gravity="center_vertical"
+                android:text="@string/start_point"
+                android:textColor="#333333"
+                android:textSize="20sp"/>
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"/>
+                android:layout_height="2dp"
+                android:background="#d0c0c0"/>
+
+            <TextView
+                android:id="@+id/txt_end"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="@string/end_point"
+                android:textColor="#333333"
+                android:textSize="20sp"/>
         </LinearLayout>
 
         <ImageView
-            android:layout_gravity="center"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:src="@drawable/translation"/>
     </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="15dp"
         android:background="#d0c0c0"/>
+
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="5">
 
         <ListView
-            android:visibility="visible"
             android:id="@+id/list_route"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
         </ListView>
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/rlayout_car_walk"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/border_bg"
-        android:paddingEnd="0dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="0dp"
-        android:paddingStart="12dp">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#e0e0e0" />
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/rlayout_car_walk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:background="@drawable/border_bg"
+            android:paddingEnd="0dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="0dp"
+            android:paddingStart="12dp"
+            android:visibility="gone">
 
-            android:orientation="vertical" >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e0e0e0"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_path_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="20dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="#333333"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_path_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#999999"
+                    android:textSize="13sp"/>
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_path_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="20dp"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textColor="#333333"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:layout_width="9dp"
+                android:layout_height="14dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="14dp"
+                android:layout_marginRight="14dp"
+                android:background="@drawable/arrow_right_blue"/>
+        </RelativeLayout>
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_path_des"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textColor="#999999"
-                android:textSize="13sp" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="9dp"
-            android:layout_height="14dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="14dp"
-            android:layout_marginRight="14dp"
-            android:background="@drawable/arrow_right_blue" />
-    </RelativeLayout>
 </LinearLayout>
