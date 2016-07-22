@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "24.0.0"
+
+    defaultConfig {
+        applicationId "com.example.liuqun.amapdemo"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+android {
+    signingConfigs {
+        //调试版的keystore
+        debug {
+            storeFile file("F:\\suer\\map\\AMapDemo\\debug.jks")
+            storePassword "261462"
+            keyAlias "debug"
+            keyPassword "261462"
+        }
+        //发布版的keystore
+        release {
+            storeFile file("F:\\suer\\map\\AMapDemo\\release.jks")
+            storePassword "261462"
+            keyAlias "release"
+            keyPassword "261462"
+        }
+    }
+}
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+//    compile files('src/main/jniLibs/AMap_3DMap_V3.3.2_20160525.jar')
+    compile files('src/main/jniLibs/AMap_Location_V2.4.1_20160414.jar')
+    compile files('src/main/jniLibs/AMap_Search_V3.3.0_20160616.jar')
+    //    compile files('src/main/jniLibs/android-support-v4.jar')
+    compile files('src/main/jniLibs/Volley.jar')
+    compile files('src/main/jniLibs/AMap3DMap_3.3.2_AMapNavi_1.9.0_20160713.jar')
+    compile files('src/main/jniLibs/Msc.jar')
+}
