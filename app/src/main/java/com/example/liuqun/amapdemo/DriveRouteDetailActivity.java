@@ -128,7 +128,7 @@ public class DriveRouteDetailActivity extends AppCompatActivity implements Locat
             lp2.setMargins(0, -h, 0, h);
             menu.setLayoutParams(lp);
             view.setLayoutParams(lp2);
-            mIvUp.setImageResource(R.drawable.load_more_arrow_down);
+            mIvUp.setImageResource(R.drawable.arrow);
             isUp = true;
 
         } else if (isUp) {
@@ -137,7 +137,7 @@ public class DriveRouteDetailActivity extends AppCompatActivity implements Locat
             lp.setMargins(0, 0, 0, 0);
             menu.setLayoutParams(lp);
             view.setLayoutParams(lp);
-            mIvUp.setImageResource(R.drawable.history_directory_indicator_up);
+            mIvUp.setImageResource(R.drawable.arrow_up);
             isUp = false;
         }
     }

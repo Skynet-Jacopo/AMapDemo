@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingRight="20dp"
-            android:src="@drawable/bus01"/>
+            android:src="@drawable/bus"/>
 
         <ImageView
             android:id="@+id/iv_car"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingLeft="20dp"
-            android:src="@drawable/man01"/>
+            android:src="@drawable/walk"/>
     </LinearLayout>
 
     <TextView
@@ -53,18 +53,20 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/iv_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:src="@drawable/nbsearch_location_map"/>
+                android:src="@drawable/loca"/>
 
             <ImageView
+                android:id="@+id/iv_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:src="@drawable/ic_radio_button_unchecked_black_24dp"/>
+                android:src="@drawable/oval"/>
         </LinearLayout>
 
         <LinearLayout
@@ -101,11 +103,12 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/iv_change"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/translation"/>
+            android:src="@drawable/change"/>
     </LinearLayout>
 
     <TextView

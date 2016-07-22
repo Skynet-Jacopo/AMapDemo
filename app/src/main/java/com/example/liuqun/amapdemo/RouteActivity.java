@@ -48,18 +48,26 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
     private BusRouteResult   mBusRouteResult;//公交回调结果
     private WalkRouteResult  mWalkRouteResult;//步行回调结果
     private RouteSearch      mRouteSearch;
-    private String mCurrentCityName;//当前城市名称
-    private LatLonPoint mStartPoint;//起点，
-    private LatLonPoint mEndPoint;//终点，
-    private ListView    mBusResultList;
+    private String           mCurrentCityName;//当前城市名称
+    private LatLonPoint      mStartPoint;//起点，
+    private LatLonPoint      mEndPoint;//终点，
+    private ListView         mBusResultList;
     //逆地理编码
-    private GeocodeSearch geocoderSearch;
+    private GeocodeSearch    geocoderSearch;
 
     private ProgressDialog progDialog = null;// 搜索时进度条
     private RelativeLayout mRlayoutCarAndWalk;
     private TextView       mTvPathTitle;
     private TextView       mTvPathDes;
-    private TextView mTxtEnd;
+    private TextView       mTvEnd;
+    private ImageView      mIvChange;
+    private TextView       mTvStart;
+    private ImageView      mIvStart;
+    private ImageView mIvEnd;
+    private String mAddress;//逆地理编码获取到的地址信息
+    private int state =BUS;//当点击翻转图标时用于记录当前所处的出行方式
+    private boolean isRight =true;//用于记录起点和终点是否翻转
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +77,6 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
         mContext = this.getApplicationContext();
         initView();
         initEvent();
-
     }
 
     private void initView() {
@@ -77,7 +84,11 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
         mIvBus = (ImageView) findViewById(R.id.iv_bus);
         mIvCar = (ImageView) findViewById(R.id.iv_car);
         mIvWalk = (ImageView) findViewById(R.id.iv_walk);
-        mTxtEnd = (TextView) findViewById(R.id.txt_end);
+        mTvStart = (TextView) findViewById(R.id.txt_start);
+        mTvEnd = (TextView) findViewById(R.id.txt_end);
+        mIvStart = (ImageView) findViewById(R.id.iv_start);
+        mIvEnd = (ImageView) findViewById(R.id.iv_end);
+        mIvChange = (ImageView) findViewById(R.id.iv_change);
 
         mRlayoutCarAndWalk = (RelativeLayout) findViewById(R.id.rlayout_car_walk);
         mTvPathTitle = (TextView) findViewById(R.id.tv_path_title);
@@ -130,34 +141,67 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
         mIvBus.setOnClickListener(this);
         mIvCar.setOnClickListener(this);
         mIvWalk.setOnClickListener(this);
+        mIvChange.setOnClickListener(this);
     }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_bus:
+                state =BUS;
                 mRlayoutCarAndWalk.setVisibility(View.GONE);
                 mBusResultList.setVisibility(View.VISIBLE);
                 mIvBus.setImageResource(R.drawable.bus02);
                 mIvCar.setImageResource(R.drawable.car01);
-                mIvWalk.setImageResource(R.drawable.man01);
+                mIvWalk.setImageResource(R.drawable.walk);
                 searchRouteResult(BUS, RouteSearch.BusDefault);
                 break;
             case R.id.iv_car:
+                state =CAR;
                 mRlayoutCarAndWalk.setVisibility(View.VISIBLE);
                 mBusResultList.setVisibility(View.GONE);
-                mIvBus.setImageResource(R.drawable.bus01);
+                mIvBus.setImageResource(R.drawable.bus);
                 mIvCar.setImageResource(R.drawable.car02);
-                mIvWalk.setImageResource(R.drawable.man01);
+                mIvWalk.setImageResource(R.drawable.walk);
                 searchRouteResult(CAR, RouteSearch.DrivingDefault);
                 break;
             case R.id.iv_walk:
+                state = WALK;
                 mRlayoutCarAndWalk.setVisibility(View.VISIBLE);
                 mBusResultList.setVisibility(View.GONE);
-                mIvBus.setImageResource(R.drawable.bus01);
+                mIvBus.setImageResource(R.drawable.bus);
                 mIvCar.setImageResource(R.drawable.car01);
                 mIvWalk.setImageResource(R.drawable.man02);
                 searchRouteResult(WALK, RouteSearch.WalkDefault);
+                break;
+            case R.id.iv_change:
+                if (isRight){
+                    mIvStart.setImageResource(R.drawable.oval);
+                    mIvEnd.setImageResource(R.drawable.loca);
+                    mTvStart.setText(mAddress);
+                    mTvEnd.setText("我的位置");
+                    LatLonPoint temp = mStartPoint;
+                    mStartPoint =mEndPoint;
+                    mEndPoint =temp;
+                    isRight =false;
+                }else {
+                    mIvStart.setImageResource(R.drawable.loca);
+                    mIvEnd.setImageResource(R.drawable.oval);
+                    mTvStart.setText("我的位置");
+                    mTvEnd.setText(mAddress);
+                    LatLonPoint temp = mStartPoint;
+                    mStartPoint =mEndPoint;
+                    mEndPoint =temp;
+                    isRight =true;
+                }
+                if (state == BUS){
+                    searchRouteResult(BUS, RouteSearch.BusDefault);
+                }else if (state == CAR){
+                    searchRouteResult(CAR, RouteSearch.DrivingDefault);
+                }else if (state == WALK){
+                    searchRouteResult(WALK, RouteSearch.WalkDefault);
+                }
                 break;
         }
     }
@@ -211,8 +255,8 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
                 if (result.getPaths().size() > 0) {
                     mDriveRouteResult = result;
                     final DrivePath drivePath = mDriveRouteResult.getPaths().get(0);
-                    int dis = (int) drivePath.getDistance();
-                    int dur = (int) drivePath.getDuration();
+                    int             dis       = (int) drivePath.getDistance();
+                    int             dur       = (int) drivePath.getDuration();
                     String des = AMapUtil.getFriendlyTime(dur) + " . " + AMapUtil.getFriendlyLength
                             (dis);
                     mTvPathDes.setText(des);
@@ -222,7 +266,7 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
                     List<DriveStep> steps = drivePath.getSteps();
                     String          road  = "";
                     for (int i = 0; i < steps.size(); i++) {
-                        road += steps.get(i).getRoad()+" ";
+                        road += steps.get(i).getRoad() + " ";
                     }
                     mTvPathTitle.setText("途径:" + road);
                     mRlayoutCarAndWalk.setOnClickListener(new View.OnClickListener() {
@@ -258,15 +302,15 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
                     mWalkRouteResult = result;
                     final WalkPath walkPath = mWalkRouteResult.getPaths()
                             .get(0);
-                    int dis = (int) walkPath.getDistance();
-                    int dur = (int) walkPath.getDuration();
-                    String des = AMapUtil.getFriendlyTime(dur)+" . "+AMapUtil.getFriendlyLength(dis);
+                    int    dis = (int) walkPath.getDistance();
+                    int    dur = (int) walkPath.getDuration();
+                    String des = AMapUtil.getFriendlyTime(dur) + " . " + AMapUtil.getFriendlyLength(dis);
                     mTvPathDes.setText(des);
-                    Log.d(TAG, "onWalkRouteSearched: "+AMapUtil.getFriendlyTime(dur));
+                    Log.d(TAG, "onWalkRouteSearched: " + AMapUtil.getFriendlyTime(dur));
                     List<WalkStep> steps = walkPath.getSteps();
                     String         road  = "";
                     for (int i = 0; i < steps.size(); i++) {
-                        road += steps.get(i).getRoad()+" ";
+                        road += steps.get(i).getRoad() + " ";
                     }
                     mTvPathTitle.setText("途径:" + road);
                     mRlayoutCarAndWalk.setOnClickListener(new View.OnClickListener() {
@@ -317,10 +361,11 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
     //逆地理编码回调接口
     @Override
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-
-        mTxtEnd.setText(regeocodeResult.getRegeocodeAddress().getFormatAddress()+"附近");
+        mAddress = regeocodeResult.getRegeocodeAddress().getFormatAddress() + "附近";
+        mTvEnd.setText(mAddress);
 
     }
+
     //地理编码结果回调
     @Override
     public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {

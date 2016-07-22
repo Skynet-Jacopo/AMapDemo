@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/bus01"/>
+                    android:src="@drawable/bus"/>
 
                 <TextView
                     android:layout_marginTop="5dp"
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/man01"/>
+                    android:src="@drawable/walk"/>
 
                 <TextView
                     android:layout_marginTop="5dp"

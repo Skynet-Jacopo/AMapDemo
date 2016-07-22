@@ -26,12 +26,14 @@
             android:value="74fb98e9d05c3fcc7eccdfc17b52bd1d">
         </meta-data>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".FirstActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity">
         </activity>
 
         <service android:name="com.amap.api.location.APSService">

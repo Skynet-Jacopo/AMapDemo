@@ -81,9 +81,17 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，实现地图生命周期管理
         assert mMapView != null;
         mMapView.onCreate(savedInstanceState);
-
+        getIntentData();
         init();
         initEvent();
+    }
+
+    private void getIntentData() {
+//        mTargetLatLng = new LatLng(36.608867, 116.963587);
+        Intent intent = getIntent();
+        Bundle bundle =intent.getExtras();
+        mTargetLatLng = new LatLng(bundle.getDouble("TargetLatitude"),bundle.getDouble
+                ("TargetLongitude"));
     }
 
     private void init() {
@@ -141,8 +149,6 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
         // 设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
         aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
 
-        //以下为商家的经纬坐标添加标记
-        mTargetLatLng = new LatLng(36.608867, 116.963587);
         MarkerOptions otMarkerOptions = new MarkerOptions();
         otMarkerOptions.position(mTargetLatLng);
         otMarkerOptions.visible(true);//设置可见
