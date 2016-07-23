@@ -41,6 +41,7 @@ public class WalkRouteDetailActivity extends AppCompatActivity implements Locati
     private TextView     mTvPathTitle;
     private TextView     mTvPathDes;
     private ListView     mLvPathDetial;
+    private LinearLayout mLLayoutTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +80,18 @@ public class WalkRouteDetailActivity extends AppCompatActivity implements Locati
         walkRouteOverlay.zoomToSpan();
 
         mIvUp = (ImageView) findViewById(R.id.iv_up);
+        mLLayoutTitle = (LinearLayout) findViewById(R.id.llayout_title);
         view = (LinearLayout) findViewById(R.id.llayout_map);
         menu = (LinearLayout) findViewById(R.id.llayout_route_detail);
         isUp = false;
         mIvUp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
+                UpButton();
+            }
+        });
+        mLLayoutTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 UpButton();
             }
         });

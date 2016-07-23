@@ -34,6 +34,7 @@
 
 
             <LinearLayout
+                android:id="@+id/llayout_title"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -49,9 +50,8 @@
                     android:layout_marginTop="20dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:textColor="#333333"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
+                    android:textColor="#261314"
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:layout_gravity="left|bottom"

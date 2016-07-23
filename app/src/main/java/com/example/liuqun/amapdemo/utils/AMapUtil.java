@@ -243,7 +243,7 @@ public class AMapUtil {
 			String subDis       = getFriendlyLength((int) subDistance);
 			float  walkDistance = busPath.getWalkDistance();
 			String walkDis      = getFriendlyLength((int) walkDistance);
-			return String.valueOf(time + " . 总长" + subDis + " . 步行" + walkDis);
+			return String.valueOf(time + "  ·  总长" + subDis + "  ·  步行" + walkDis);
 		}
 		
 		public static String getSimpleBusLineName(String busLineName) {

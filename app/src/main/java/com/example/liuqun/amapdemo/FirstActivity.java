@@ -7,6 +7,9 @@ import android.view.View;
 
 import com.amap.api.maps.model.LatLng;
 
+/**
+ * 已知商铺坐标,跳转到地面界面
+ */
 public class FirstActivity extends AppCompatActivity implements View.OnClickListener {
 
     private LatLng mTargetLatLng;
@@ -21,7 +24,7 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        Intent intent =new Intent(this,MainActivity.class);
+        Intent intent =new Intent(this,LocationActivity.class);
         Bundle bundle =new Bundle();
         bundle.putDouble("TargetLatitude",mTargetLatLng.latitude);
         bundle.putDouble("TargetLongitude",mTargetLatLng.longitude);

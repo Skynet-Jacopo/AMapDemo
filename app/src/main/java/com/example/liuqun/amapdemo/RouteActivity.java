@@ -63,10 +63,10 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
     private ImageView      mIvChange;
     private TextView       mTvStart;
     private ImageView      mIvStart;
-    private ImageView mIvEnd;
-    private String mAddress;//逆地理编码获取到的地址信息
-    private int state =BUS;//当点击翻转图标时用于记录当前所处的出行方式
-    private boolean isRight =true;//用于记录起点和终点是否翻转
+    private ImageView      mIvEnd;
+    private String         mAddress;//逆地理编码获取到的地址信息
+    private int     state   = BUS;//当点击翻转图标时用于记录当前所处的出行方式
+    private boolean isRight = true;//用于记录起点和终点是否翻转
 
 
     @Override
@@ -149,7 +149,7 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_bus:
-                state =BUS;
+                state = BUS;
                 mRlayoutCarAndWalk.setVisibility(View.GONE);
                 mBusResultList.setVisibility(View.VISIBLE);
                 mIvBus.setImageResource(R.drawable.bus02);
@@ -158,7 +158,7 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
                 searchRouteResult(BUS, RouteSearch.BusDefault);
                 break;
             case R.id.iv_car:
-                state =CAR;
+                state = CAR;
                 mRlayoutCarAndWalk.setVisibility(View.VISIBLE);
                 mBusResultList.setVisibility(View.GONE);
                 mIvBus.setImageResource(R.drawable.bus);
@@ -176,30 +176,30 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
                 searchRouteResult(WALK, RouteSearch.WalkDefault);
                 break;
             case R.id.iv_change:
-                if (isRight){
+                if (isRight) {
                     mIvStart.setImageResource(R.drawable.oval);
                     mIvEnd.setImageResource(R.drawable.loca);
                     mTvStart.setText(mAddress);
                     mTvEnd.setText("我的位置");
                     LatLonPoint temp = mStartPoint;
-                    mStartPoint =mEndPoint;
-                    mEndPoint =temp;
-                    isRight =false;
-                }else {
+                    mStartPoint = mEndPoint;
+                    mEndPoint = temp;
+                    isRight = false;
+                } else {
                     mIvStart.setImageResource(R.drawable.loca);
                     mIvEnd.setImageResource(R.drawable.oval);
                     mTvStart.setText("我的位置");
                     mTvEnd.setText(mAddress);
                     LatLonPoint temp = mStartPoint;
-                    mStartPoint =mEndPoint;
-                    mEndPoint =temp;
-                    isRight =true;
+                    mStartPoint = mEndPoint;
+                    mEndPoint = temp;
+                    isRight = true;
                 }
-                if (state == BUS){
+                if (state == BUS) {
                     searchRouteResult(BUS, RouteSearch.BusDefault);
-                }else if (state == CAR){
+                } else if (state == CAR) {
                     searchRouteResult(CAR, RouteSearch.DrivingDefault);
-                }else if (state == WALK){
+                } else if (state == WALK) {
                     searchRouteResult(WALK, RouteSearch.WalkDefault);
                 }
                 break;
@@ -275,8 +275,7 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
                             Intent intent = new Intent(mContext,
                                     DriveRouteDetailActivity.class);
                             intent.putExtra("drive_path", drivePath);
-                            intent.putExtra("drive_result",
-                                    mDriveRouteResult);
+                            intent.putExtra("drive_result", mDriveRouteResult);
                             startActivity(intent);
                         }
                     });
@@ -310,17 +309,19 @@ public class RouteActivity extends AppCompatActivity implements View.OnClickList
                     List<WalkStep> steps = walkPath.getSteps();
                     String         road  = "";
                     for (int i = 0; i < steps.size(); i++) {
-                        road += steps.get(i).getRoad() + " ";
+                        if (road.length() < 20) {
+                            road += steps.get(i).getRoad() + " ";
+                        }
                     }
                     mTvPathTitle.setText("途径:" + road);
+                    Log.d(TAG, "onWalkRouteSearched: " + road.trim().length());
                     mRlayoutCarAndWalk.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(mContext,
                                     WalkRouteDetailActivity.class);
                             intent.putExtra("walk_path", walkPath);
-                            intent.putExtra("walk_result",
-                                    mWalkRouteResult);
+                            intent.putExtra("walk_result", mWalkRouteResult);
                             startActivity(intent);
                         }
                     });

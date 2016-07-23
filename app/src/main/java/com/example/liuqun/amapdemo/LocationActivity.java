@@ -32,10 +32,10 @@ import com.amap.api.services.route.WalkRouteResult;
 import com.example.liuqun.amapdemo.utils.AMapUtil;
 import com.example.liuqun.amapdemo.utils.ToastUtil;
 
-public class MainActivity extends AppCompatActivity implements LocationSource, AMapLocationListener,
+public class LocationActivity extends AppCompatActivity implements LocationSource, AMapLocationListener,
         View.OnClickListener, AMap.OnMarkerClickListener, GeocodeSearch.OnGeocodeSearchListener, RouteSearch.OnRouteSearchListener {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "LocationActivity";
     public static final int BUS  = 1;
     public static final int CAR  = 2;
     public static final int WALK = 3;
@@ -49,10 +49,11 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
     private LinearLayout mLLBus;
     private LinearLayout mLLCar;
     private LinearLayout mLLWalk;
-    private LatLng mCurrentlatLng;
-    private LatLng mTargetLatLng;
 
-    private String mCurrentCityName;
+    private LatLng mCurrentlatLng;//当前定位地理坐标
+    private LatLng mTargetLatLng;//目的地地理坐标
+
+    private String mCurrentCityName;//当前城市(用于路径规划,逆地理编码获取)
     private LatLonPoint mStartPoint;//起点，
     private LatLonPoint mEndPoint;//终点，
 
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
         //逆地理编码
         geocoderSearch = new GeocodeSearch(this);
         geocoderSearch.setOnGeocodeSearchListener(this);
-//latLonPoint参数表示一个Latlng，第二参数表示范围多少米，GeocodeSearch.AMAP表示是国测局坐标系还是GPS原生坐标系
+        //latLonPoint参数表示一个Latlng，第二参数表示范围多少米，GeocodeSearch.AMAP表示是国测局坐标系还是GPS原生坐标系
         RegeocodeQuery query = new RegeocodeQuery(mEndPoint, 200,GeocodeSearch.AMAP);
         geocoderSearch.getFromLocationAsyn(query);
 
@@ -158,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
 
         mEndPoint =new LatLonPoint(mTargetLatLng.latitude,mTargetLatLng.longitude);
         //标记图标
-        otMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.nbsearch_location_map));
+        otMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.loca));
 
         aMap.addMarker(otMarkerOptions);
         aMap.setOnMarkerClickListener(this);// 添加点击marker监听事件
@@ -257,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
                 otMarkerOptions.visible(true);//设置可见
                 otMarkerOptions.title("当前位置");
                 otMarkerOptions.draggable(true);
-                otMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.nbsearch_location_map));
+                otMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.loca));
                 aMap.addMarker(otMarkerOptions);
 
                 aMap.setOnMarkerClickListener(this);// 添加点击marker监听事件
@@ -271,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
                 searchRouteResult(WALK,RouteSearch.WalkDefault);
 
 //            } else {
-//                Toast.makeText(MainActivity.this, "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(LocationActivity.this, "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo(), Toast.LENGTH_SHORT).show();
             }
         }
     }

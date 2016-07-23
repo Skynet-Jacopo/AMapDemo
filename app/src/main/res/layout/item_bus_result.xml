@@ -28,9 +28,8 @@
             android:layout_marginTop="20dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="#333333"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textColor="#261314"
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/bus_path_des"

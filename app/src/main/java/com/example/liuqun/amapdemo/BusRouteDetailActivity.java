@@ -23,7 +23,7 @@ import com.amap.api.services.route.BusRouteResult;
 import com.example.liuqun.amapdemo.adapter.BusSegmentListAdapter;
 import com.example.liuqun.amapdemo.utils.AMapUtil;
 
-public class BusRouteDetailActivity extends AppCompatActivity implements LocationSource, AMapLocationListener {
+public class BusRouteDetailActivity extends AppCompatActivity implements LocationSource, AMapLocationListener, View.OnClickListener {
 
     private AMap               aMap;
     private MapView            mapView;
@@ -37,9 +37,10 @@ public class BusRouteDetailActivity extends AppCompatActivity implements Locatio
     private LinearLayout view;//路径详情界面
     private boolean  isUp;//判断路径详情界面是否弹出
 
-    private TextView mTvPathTitle;
-    private TextView mTvPathDes;
-    private ListView mLvPathDetial;
+    private TextView     mTvPathTitle;
+    private TextView     mTvPathDes;
+    private ListView     mLvPathDetial;
+    private LinearLayout mLLyoutTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,14 +76,12 @@ public class BusRouteDetailActivity extends AppCompatActivity implements Locatio
         walkRouteOverlay.zoomToSpan();
 
         mIvUp = (ImageView) findViewById(R.id.iv_up);
+        mLLyoutTitle = (LinearLayout) findViewById(R.id.llayout_title);
         view = (LinearLayout) findViewById(R.id.llayout_map);
         menu = (LinearLayout) findViewById(R.id.llayout_route_detail);
         isUp = false;
-        mIvUp.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-                UpButton();
-            }
-        });
+        mIvUp.setOnClickListener(this);
+        mLLyoutTitle.setOnClickListener(this);
 
         mTvPathTitle = (TextView) findViewById(R.id.path_title);
         mTvPathDes = (TextView) findViewById(R.id.path_des);
@@ -185,6 +184,11 @@ public class BusRouteDetailActivity extends AppCompatActivity implements Locatio
         super.onSaveInstanceState(outState);
         //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，实现地图生命周期管理
         mapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onClick(View v) {
+        UpButton();
     }
 }
 
